@@ -1,0 +1,84 @@
+name: Release
+
+on:
+   workflow_dispatch:
+      inputs:
+         proton:
+            description: Proton tag to build against
+            required: true
+            default: proton-11.0-3
+
+permissions:
+   contents: write
+
+concurrency:
+   group: armonica-release
+   cancel-in-progress: false
+
+jobs:
+   build:
+      name: Build ARM64 runtime
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 60
+      env:
+         PROTON: ${{ inputs.proton }}
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v5
+
+         - name: Setup .NET
+           uses: actions/setup-dotnet@v4
+           with:
+              dotnet-version: 10.0.x
+
+         - name: Install build dependencies
+           run: |
+              sudo apt-get update
+              sudo NEEDRESTART_MODE=a apt-get install -y --no-install-recommends \
+                git curl python3 make gcc libc6-dev flex bison autoconf perl pkg-config \
+                osslsigncode xz-utils
+
+         - name: Cache toolchain and upstream sources
+           uses: actions/cache@v4
+           with:
+              path: deps
+              key: armonica-${{ runner.arch }}-${{ inputs.proton }}-${{ hashFiles('manifest.json') }}
+
+         - name: Build
+           run: dotnet run --project src/Armonica -c Release -- build --proton "$PROTON"
+
+         - name: Sign and package
+           env:
+              SIGNING_PFX: ${{ secrets.ARMONICA_SIGNING_PFX }}
+              SIGNING_PASSWORD: ${{ secrets.ARMONICA_SIGNING_PASSWORD }}
+           run: |
+              set -euo pipefail
+              trap 'rm -f "$RUNNER_TEMP"/signing.*' EXIT
+              printf '%s' "$SIGNING_PFX" | base64 -d > "$RUNNER_TEMP/signing.pfx"
+
+              osslsigncode sign \
+                -pkcs12 "$RUNNER_TEMP/signing.pfx" \
+                -pass "$SIGNING_PASSWORD" \
+                -h sha256 \
+                -n "Armonica Steam API" \
+                -i "${{ github.server_url }}/${{ github.repository }}" \
+                -in out/steam_api64.dll \
+                -out out/steam_api64.dll.signed
+              mv out/steam_api64.dll.signed out/steam_api64.dll
+
+              dotnet run --project src/Armonica -c Release -- package --proton "$PROTON"
+
+              openssl pkcs12 -in "$RUNNER_TEMP/signing.pfx" -passin env:SIGNING_PASSWORD \
+                -nocerts -nodes -out "$RUNNER_TEMP/signing.key"
+              openssl dgst -sha256 -sign "$RUNNER_TEMP/signing.key" \
+                -out "dist/armonica-$PROTON.tar.gz.sig" "dist/armonica-$PROTON.tar.gz"
+
+         - name: Publish
+           env:
+              GH_TOKEN: ${{ github.token }}
+           run: |
+              set -euo pipefail
+              tag="v$(jq -r '.version' manifest.json)"
+              gh release view "$tag" > /dev/null 2>&1 ||
+                gh release create "$tag" --target "$GITHUB_SHA" --title "Armonica $tag" --notes "Native ARM64 runtime"
+              gh release upload "$tag" "dist/armonica-$PROTON.tar.gz" "dist/armonica-$PROTON.tar.gz.sig"

@@ -1,0 +1,59 @@
+LIBRARY vcruntime140.dll
+EXPORTS
+_CreateFrameInfo = ucrtbase._CreateFrameInfo
+_CxxThrowException = ucrtbase._CxxThrowException
+_FindAndUnlinkFrame = ucrtbase._FindAndUnlinkFrame
+_IsExceptionObjectToBeDestroyed = ucrtbase._IsExceptionObjectToBeDestroyed
+_SetWinRTOutOfMemoryExceptionCallback = ucrtbase._SetWinRTOutOfMemoryExceptionCallback
+__AdjustPointer = ucrtbase.__AdjustPointer
+__C_specific_handler = ucrtbase.__C_specific_handler
+__CxxDetectRethrow = ucrtbase.__CxxDetectRethrow
+__CxxExceptionFilter = ucrtbase.__CxxExceptionFilter
+__CxxFrameHandler
+__CxxFrameHandler2
+__CxxFrameHandler3
+__CxxQueryExceptionSize = ucrtbase.__CxxQueryExceptionSize
+__CxxRegisterExceptionObject = ucrtbase.__CxxRegisterExceptionObject
+__CxxUnregisterExceptionObject = ucrtbase.__CxxUnregisterExceptionObject
+__DestructExceptionObject = ucrtbase.__DestructExceptionObject
+__RTCastToVoid = ucrtbase.__RTCastToVoid
+__RTDynamicCast = ucrtbase.__RTDynamicCast
+__RTtypeid = ucrtbase.__RTtypeid
+__current_exception = ucrtbase.__current_exception
+__current_exception_context = ucrtbase.__current_exception_context
+__intrinsic_setjmp = ucrtbase.__intrinsic_setjmp
+__intrinsic_setjmpex = ucrtbase.__intrinsic_setjmpex
+__processing_throw = ucrtbase.__processing_throw
+__std_exception_copy = ucrtbase.__std_exception_copy
+__std_exception_destroy = ucrtbase.__std_exception_destroy
+__std_terminate = ucrtbase.__std_terminate
+__std_type_info_compare = ucrtbase.__std_type_info_compare
+__std_type_info_destroy_list = ucrtbase.__std_type_info_destroy_list
+__std_type_info_hash = ucrtbase.__std_type_info_hash
+__std_type_info_name = ucrtbase.__std_type_info_name
+__telemetry_main_invoke_trigger
+__telemetry_main_return_trigger
+__unDName = ucrtbase.__unDName
+__unDNameEx = ucrtbase.__unDNameEx
+__uncaught_exception = ucrtbase.__uncaught_exception
+__uncaught_exceptions
+__vcrt_InitializeCriticalSectionEx
+_get_purecall_handler = ucrtbase._get_purecall_handler
+_get_unexpected = ucrtbase._get_unexpected
+_local_unwind = ucrtbase._local_unwind
+_purecall = ucrtbase._purecall
+_set_purecall_handler = ucrtbase._set_purecall_handler
+_set_se_translator = ucrtbase._set_se_translator
+longjmp = ucrtbase.longjmp
+memchr = ucrtbase.memchr
+memcmp = ucrtbase.memcmp
+memcpy = ucrtbase.memcpy
+memmove = ucrtbase.memmove
+memset = ucrtbase.memset
+set_unexpected = ucrtbase.set_unexpected
+strchr = ucrtbase.strchr
+strrchr = ucrtbase.strrchr
+strstr = ucrtbase.strstr
+wcschr = ucrtbase.wcschr
+wcsrchr = ucrtbase.wcsrchr
+wcsstr = ucrtbase.wcsstr

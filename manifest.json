@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "proton": "proton-11.0-3",
+  "llvmMingwVersion": "20260922",
+  "components": {
+    "zlibVersion": "1.3.1",
+    "bsipaCommit": "977051a82d200314a9d944a0be54fece2c313115",
+    "monoModCommit": "69fdc9debfcdf99cf6481047801b03b4eba947fe",
+    "monoModVersion": "1.3.4",
+    "monoModSha256": "0f08611a1086feacd2434c3d90cb15e311b0c99aa4ad6cfe53277dfd6d8c6ad3",
+    "unityMonoCommit": "75711b4363fa58f05f953b3f95400d4d61c0ca35"
+  },
+  "package": {
+    "steamAPIMaxBytes": 358400,
+    "files": {
+      "game/Beat Saber_Data/Plugins/ARM64/LIV_Bridge.dll": "LIV_Bridge.dll",
+      "game/Beat Saber_Data/Plugins/ARM64/openxr_loader.dll": "openxr_loader.dll",
+      "game/Beat Saber_Data/Plugins/ARM64/steam_api64.dll": "steam_api64.dll",
+      "game/MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll": "MonoPosixHelper.dll",
+      "game/openxr_loader.dll": "openxr_loader.dll",
+      "game/vcruntime140.dll": "vcruntime140.dll",
+      "mods/Libs/MonoMod.Core.dll": "MonoMod.Core.dll",
+      "mods/winhttp.dll": "winhttp.dll",
+      "wine/aarch64-windows/lsteamclient_a64.dll": "lsteamclient_a64.dll",
+      "wine/aarch64-windows/wineopenxr_a64.dll": "wineopenxr_a64.dll"
+    }
+  }
+}

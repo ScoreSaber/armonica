@@ -1,0 +1,8 @@
+deps/
+generated/
+obj/
+out/
+dist/
+bin/
+src/**/bin/
+src/**/obj/
