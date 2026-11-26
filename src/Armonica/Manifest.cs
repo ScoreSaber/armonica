@@ -3,7 +3,6 @@ using System.Text.Json;
 namespace Armonica;
 
 internal sealed record Manifest(
-    int Version,
     string Proton,
     string LLVMMingwVersion,
     ComponentsSpec Components,

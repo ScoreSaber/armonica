@@ -1,5 +1,4 @@
 {
-  "version": 1,
   "proton": "proton-11.0-3",
   "llvmMingwVersion": "20260922",
   "components": {

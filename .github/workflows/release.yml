@@ -68,17 +68,16 @@ jobs:
 
               dotnet run --project src/Armonica -c Release -- package --proton "$PROTON"
 
+              archive=$(ls dist/*.tar.gz)
               openssl pkcs12 -in "$RUNNER_TEMP/signing.pfx" -passin env:SIGNING_PASSWORD \
                 -nocerts -nodes -out "$RUNNER_TEMP/signing.key"
-              openssl dgst -sha256 -sign "$RUNNER_TEMP/signing.key" \
-                -out "dist/armonica-$PROTON.tar.gz.sig" "dist/armonica-$PROTON.tar.gz"
+              openssl dgst -sha256 -sign "$RUNNER_TEMP/signing.key" -out "$archive.sig" "$archive"
 
          - name: Publish
            env:
               GH_TOKEN: ${{ github.token }}
            run: |
               set -euo pipefail
-              tag="v$(jq -r '.version' manifest.json)"
-              gh release view "$tag" > /dev/null 2>&1 ||
-                gh release create "$tag" --target "$GITHUB_SHA" --title "Armonica $tag" --notes "Native ARM64 runtime"
-              gh release upload "$tag" "dist/armonica-$PROTON.tar.gz" "dist/armonica-$PROTON.tar.gz.sig"
+              archive=$(ls dist/*.tar.gz)
+              name=$(basename "$archive" .tar.gz)
+              gh release create "$name" "$archive" "$archive.sig" --target "$GITHUB_SHA" --title "$name" --notes "Native ARM64 runtime"

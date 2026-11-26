@@ -17,6 +17,6 @@ dotnet run --project src/Armonica -- package
 
 ## Releases
 
-The release workflow takes a Proton tag and adds a signed `armonica-<tag>.tar.gz` to the `v<version>` release from [manifest.json](manifest.json)
+The release workflow takes a Proton tag and publishes a signed `armonica-<proton version>-<commit>.tar.gz`
 
 `game/` goes over the install, `mods/` replaces BSIPA's files and `wine/` is the `WINEDLLPATH`

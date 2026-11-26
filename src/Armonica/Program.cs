@@ -43,9 +43,9 @@ verifyCommand.SetAction(parseResult => {
 });
 
 var packageCommand = new Command("package", "bundle release tarball");
-packageCommand.SetAction(parseResult => {
+packageCommand.SetAction(async parseResult => {
     using ILoggerFactory loggerFactory = CreateLoggerFactory(parseResult);
-    Console.WriteLine(Packager.BuildPackage(CreateContext(parseResult, loggerFactory)));
+    Console.WriteLine(await Packager.BuildPackageAsync(CreateContext(parseResult, loggerFactory)));
 });
 
 root.Subcommands.Add(listCommand);

@@ -1,5 +1,6 @@
 using System.Formats.Tar;
 using System.IO.Compression;
+using CliWrap;
 
 namespace Armonica;
 
@@ -28,10 +29,11 @@ internal static class Packager {
         }
     }
 
-    internal static string BuildPackage(BuildContext context) {
+    internal static async Task<string> BuildPackageAsync(BuildContext context) {
         VerifyOutputs(context);
 
-        string stage = Path.Combine(context.Dist, $"armonica-{context.Proton}");
+        string commit = (await Cli.Wrap("git").WithArguments(["-c", "safe.directory=*", "-C", context.Root, "rev-parse", "--short=6", "HEAD"]).ExecuteFallible()).StandardOutput.Trim();
+        string stage = Path.Combine(context.Dist, $"armonica-{context.Proton.Replace("proton-", string.Empty)}-{commit}");
         string archive = $"{stage}.tar.gz";
         if (Directory.Exists(stage)) {
             Directory.Delete(stage, recursive: true);
